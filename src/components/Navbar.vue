@@ -176,5 +176,28 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   .nav-links.open {
     transform: translateY(0);
   }
+
+  /* En móvil el menú siempre tiene fondo blanco — letras siempre oscuras */
+  .dark-hero .nav-links.open a {
+    color: var(--navy) !important;
+  }
+
+  .dark-hero .nav-links.open .router-link-active {
+    color: var(--navy) !important;
+    border-bottom: 2px solid var(--gold);
+  }
+
+  .dark-hero .nav-links.open a:hover {
+    color: var(--teal) !important;
+  }
+
+  /* Botón hamburguesa siempre visible en cualquier fondo */
+  .dark-hero .hamburger span {
+    background: white;
+  }
+
+  .navbar.scrolled .hamburger span {
+    background: var(--navy);
+  }
 }
 </style>

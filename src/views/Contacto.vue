@@ -32,6 +32,19 @@
               </div>
             </a>
 
+            <a :href="`mailto:${empresa.email}`" class="contact-item">
+              <div class="ci-icon teal">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+                  <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+              </div>
+              <div class="ci-text">
+                <strong>Correo</strong>
+                <span>{{ empresa.email }}</span>
+                <small>Respuesta en menos de 24 horas</small>
+              </div>
+            </a>
+
             <div class="contact-item">
               <div class="ci-icon navy">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
@@ -40,7 +53,7 @@
               </div>
               <div class="ci-text">
                 <strong>Ubicación</strong>
-                <span>México</span>
+                <span>{{ domicilio }}</span>
                 <small>Atención a todo el país</small>
               </div>
             </div>
@@ -103,6 +116,7 @@
                 <option>Reducción de Costos</option>
                 <option>Sistema de Inventario</option>
                 <option>Dashboard Empresarial</option>
+                <option>Integración con WhatsApp</option>
                 <option>Otro sistema personalizado</option>
               </select>
             </div>
@@ -118,6 +132,11 @@
               </svg>
               {{ sent ? '¡Mensaje enviado por WhatsApp!' : 'Enviar por WhatsApp' }}
             </button>
+
+            <p class="privacy-note">
+              Al enviar este formulario aceptas el tratamiento de tus datos conforme a nuestro
+              <RouterLink to="/aviso-de-privacidad">Aviso de Privacidad</RouterLink>.
+            </p>
           </form>
         </div>
 
@@ -127,9 +146,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { empresa, domicilioPublico } from '../data/empresa.js'
 
-const whatsappUrl = 'https://wa.me/524492557153'
+const whatsappUrl = empresa.whatsapp
+const domicilio = computed(() => domicilioPublico())
 const sent = ref(false)
 
 const form = ref({
@@ -165,6 +186,23 @@ function handleSubmit() {
 </script>
 
 <style scoped>
+.privacy-note {
+  margin-top: 0.9rem;
+  font-size: 0.78rem;
+  color: var(--gray);
+  line-height: 1.6;
+  text-align: center;
+}
+
+.privacy-note a {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.privacy-note a:hover {
+  text-decoration: underline;
+}
+
 .page-hero {
   background: linear-gradient(135deg, var(--navy) 0%, #1a2d9e 100%);
   color: white;
@@ -265,10 +303,14 @@ function handleSubmit() {
 
 .ci-icon.navy { background: var(--navy); }
 .ci-icon.blue { background: var(--blue); }
+.ci-icon.teal { background: var(--teal); }
 
 .ci-text {
   display: flex;
   flex-direction: column;
+  /* El correo y el domicilio son largos: que corten en vez de desbordar la tarjeta */
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .ci-text strong {

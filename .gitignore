@@ -1,0 +1,22 @@
+# Dependencias
+node_modules/
+
+# Build de produccion (se genera en el servidor con npm run build)
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+debug.log
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Editores / SO
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db

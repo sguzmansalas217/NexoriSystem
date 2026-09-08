@@ -14,16 +14,20 @@
           </div>
         </div>
         <div class="hero-visual">
-          <div class="floating-card card1"><span class="card-icon">🤖</span><span>Inteligencia Artificial</span></div>
-          <div class="floating-card card2"><span class="card-icon">⚙️</span><span>RPAs</span></div>
-          <div class="floating-card card3"><span class="card-icon">⏰</span><span>Control de Asistencia</span></div>
-          <div class="floating-card card4"><span class="card-icon">💰</span><span>Nómina</span></div>
-          <div class="floating-card card5"><span class="card-icon">📍</span><span>Trazabilidad</span></div>
-          <div class="floating-card card6"><span class="card-icon">📉</span><span>Reducción de Costos</span></div>
-          <div class="floating-card card7"><span class="card-icon">🏪</span><span>Inventario</span></div>
-          <div class="floating-card card8"><span class="card-icon">📊</span><span>Dashboard</span></div>
-          <div class="floating-card card9"><span class="card-icon">📝</span><span>Registros Automáticos</span></div>
-          <div class="floating-card card10"><span class="card-icon">🛠️</span><span>A tu Medida</span></div>
+          <div
+            v-for="(c, i) in orbitCards"
+            :key="c.label"
+            class="card-slot"
+            :style="slotStyle(i)"
+          >
+            <div class="floating-card" :style="{ animationDelay: `${i * 0.32}s` }">
+              <svg v-if="c.wa" class="card-icon-wa" viewBox="0 0 24 24" fill="#25D366">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              <span v-else class="card-icon">{{ c.icon }}</span>
+              <span>{{ c.label }}</span>
+            </div>
+          </div>
           <div class="hero-circle">
             <img src="/logo.png" alt="Nexori System" />
           </div>
@@ -90,6 +94,32 @@
 </template>
 
 <script setup>
+// Tarjetas que orbitan el logo en el hero.
+// El orden importa: las posiciones 3 y 8 caen en los extremos izquierdo y derecho,
+// donde hay menos espacio, asi que ahi van las etiquetas mas cortas.
+const orbitCards = [
+  { icon: '💬', label: 'WhatsApp', wa: true },
+  { icon: '🤖', label: 'Inteligencia Artificial' },
+  { icon: '📊', label: 'Dashboard' },
+  { icon: '⚙️', label: 'RPAs' },
+  { icon: '🏪', label: 'Inventario' },
+  { icon: '⏰', label: 'Control de Asistencia' },
+  { icon: '📉', label: 'Reducción de Costos' },
+  { icon: '📍', label: 'Trazabilidad' },
+  { icon: '💰', label: 'Nómina' },
+  { icon: '🛠️', label: 'A tu Medida' },
+  { icon: '📝', label: 'Registros Automáticos' },
+]
+
+// Reparte las tarjetas en una elipse alrededor del logo, empezando arriba (-90 grados).
+function slotStyle(i) {
+  const angle = (-90 + (360 / orbitCards.length) * i) * (Math.PI / 180)
+  return {
+    left: `${(50 + 42 * Math.cos(angle)).toFixed(2)}%`,
+    top: `${(50 + 47 * Math.sin(angle)).toFixed(2)}%`,
+  }
+}
+
 const services = [
   {
     icon: '⏰',
@@ -120,6 +150,12 @@ const services = [
     title: 'Reportes y Dashboards',
     desc: 'Visualiza datos clave de tu empresa en tiempo real para tomar mejores decisiones.',
     color: 'rgba(61,184,238,0.15)',
+  },
+  {
+    icon: '💬',
+    title: 'Integración con WhatsApp',
+    desc: 'Sistemas que se comunican por WhatsApp con transportistas, clientes y proveedores: avisos automáticos, confirmación de entregas y seguimiento sin llamadas ni cadenas de correos.',
+    color: 'rgba(37,211,102,0.18)',
   },
   {
     icon: '⚙️',
@@ -249,8 +285,15 @@ const stats = [
   width: 230px;
 }
 
-.floating-card {
+/* El slot posiciona; la tarjeta de adentro anima.
+   Van separados a proposito: si el mismo elemento hiciera las dos cosas,
+   el transform de la animacion pisaria el de centrado. */
+.card-slot {
   position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.floating-card {
   background: white;
   border-radius: 10px;
   padding: 0.5rem 0.9rem;
@@ -265,19 +308,13 @@ const stats = [
   white-space: nowrap;
 }
 
-/* 10 tarjetas distribuidas en reloj alrededor del círculo */
-.card1  { top: 0%;    left: 50%;  transform: translateX(-50%);  animation-delay: 0s;   } /* 12 */
-.card2  { top: 6%;    right: 4%;                                  animation-delay: 0.35s;} /* 1-2 */
-.card3  { top: 30%;   right: -4%;                                 animation-delay: 0.7s; } /* 3 */
-.card4  { top: 56%;   right: 2%;                                  animation-delay: 1.05s;} /* 4-5 */
-.card5  { bottom: 2%; right: 10%;                                 animation-delay: 1.4s; } /* 5-6 */
-.card6  { bottom: 0;  left: 50%;  transform: translateX(-50%);   animation-delay: 1.75s;} /* 6 */
-.card7  { bottom: 2%; left: 4%;                                   animation-delay: 2.1s; } /* 7-8 */
-.card8  { top: 56%;   left: -2%;                                  animation-delay: 2.45s;} /* 8-9 */
-.card9  { top: 30%;   left: -6%;                                  animation-delay: 2.8s; } /* 10 */
-.card10 { top: 6%;    left: 4%;                                   animation-delay: 3.15s;} /* 11 */
-
 .card-icon { font-size: 1.1rem; }
+
+.card-icon-wa {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
@@ -307,6 +344,13 @@ const stats = [
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   text-align: left;
+}
+
+/* Si la ultima fila queda con una sola tarjeta, la centra en vez de dejarla a la izquierda */
+@media (min-width: 1025px) {
+  .services-grid > :last-child:nth-child(3n + 1) {
+    grid-column: 2;
+  }
 }
 
 .service-card {

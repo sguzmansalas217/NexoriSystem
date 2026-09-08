@@ -116,6 +116,14 @@ const projects = [
     gradient: 'linear-gradient(135deg, #FFF7ED, #FFEDD5)',
   },
   {
+    icon: '💬',
+    title: 'Sistema de Comunicación por WhatsApp',
+    desc: 'Coordinación automática con transportistas, clientes y proveedores directamente por WhatsApp. Envío de rutas y órdenes, confirmación de entrega con evidencia fotográfica y avisos de estatus sin depender de llamadas.',
+    tags: ['Logística', 'Operaciones'],
+    features: ['Mensajes automáticos', 'Confirmación de entrega', 'Evidencia fotográfica', 'Alertas de retraso'],
+    gradient: 'linear-gradient(135deg, #ECFDF5, #D1FAE5)',
+  },
+  {
     icon: '📊',
     title: 'Dashboard Empresarial',
     desc: 'Panel de control con métricas e indicadores clave de tu empresa en tiempo real. Integración con tus sistemas existentes para una visión 360°.',
@@ -205,6 +213,13 @@ const filteredProjects = computed(() => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+}
+
+/* Si la ultima fila queda con una sola tarjeta, la centra en vez de dejarla a la izquierda */
+@media (min-width: 1025px) {
+  .projects-grid > :last-child:nth-child(3n + 1) {
+    grid-column: 2;
+  }
 }
 
 .project-card {

@@ -27,7 +27,7 @@ export const empresa = {
   // El domicilio fiscal es particular. Ponlo en false para ocultar la calle y el numero
   // en la pagina de Contacto (el Aviso de Privacidad si lo conserva, porque la ley
   // exige senalar el domicilio del responsable).
-  mostrarDomicilioEnContacto: true,
+  mostrarDomicilioEnContacto: false,
 
   // --- Contacto ---
   telefono: '+52 449 255 7153',

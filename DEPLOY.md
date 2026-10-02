@@ -114,12 +114,17 @@ server {
 | Tipo | Nombre | Valor | Estado |
 |---|---|---|---|
 | A | @ | 165.232.59.88 | ✅ existe |
-| CNAME | www | nexorisystem.com. | ⚠️ **NO existe — hay que crearlo** |
+| A | www | 165.232.59.88 | ✅ existe (creado 2026-10-02) |
 
-El CNAME de `www` nunca se creó. Mientras falte, pasan dos cosas: quien escriba
-`www.nexorisystem.com` no llega a ningún lado, y el certificado SSL **no se puede
-renovar**, porque está emitido para el dominio raiz y para `www`, y Let's Encrypt
-valida los dos.
+### Lección aprendida (2026-09-08 → 2026-10-02)
+
+El registro de `www` no existía, pero el certificado SÍ estaba emitido para
+`nexorisystem.com` y `www.nexorisystem.com`. Let's Encrypt valida **todos** los
+dominios del certificado, así que la renovación falló durante tres semanas, hasta
+que el certificado venció el 22 de septiembre y el sitio quedó inaccesible 10 días.
+
+**Regla:** cada dominio listado en un certificado debe existir en el DNS. Si
+agregas un `-d` nuevo, crea primero su registro.
 
 ---
 
